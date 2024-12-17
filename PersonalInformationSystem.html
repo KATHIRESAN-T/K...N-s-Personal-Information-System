@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K...N's Personal Information System</title>
+    <style>
+        body, html {   margin: 0;   padding: 0;   font-family: Arial, sans-serif;    overflow: hidden;   }
+
+        #splash {   display: flex;    justify-content: center;    align-items: center;    height: 100vh;    background-color: #f0f9e1cb;    color: #663737;    font-family: Courier, monospace;    font-size: 3.0rem;    font-weight: bold;    animation: fadeOut 2s forwards;    }
+
+        @keyframes fadeOut {    90% { opacity: 1; }    100% { opacity: 0; display: none; }   }
+
+        #container {    display: flex;    flex-direction: column;    height: 100vh;   opacity: 0;    animation: fadeIn 1s forwards;    }
+
+        @keyframes fadeIn {   0% { opacity: 0; }   100% { opacity: 1; }    }
+
+        #header {    display: flex;    justify-content: center;    align-items: center;    background-color: #475a46;    color: white;    height: 10%;    padding: 0 10px;    box-sizing: border-box;    position: relative;    }
+
+        #header .menu-icon {    font-size: 2rem;    cursor: pointer;     position: absolute;    left: 10px;    top: 50%;    transform: translateY(-50%);    z-index: 100;    }
+
+        #header .messages {    flex: 1;    font-size: 1.2rem;    color: #a1a1be;    text-align: center;    white-space: nowrap;    position: relative;    font-family: "Lucida Handwriting";    padding-bottom: 23px;    opacity: 1;    transition: opacity 1s ease-in-out;    }
+
+        #header .messages:hover{    font-size: 1.5rem;    color: #d28888;    }
+
+        #header .messages span {    opacity: 0;    transition: opacity 1s ease-in-out;    display: inline-block;    position: absolute;    left: 50%;    transform: translateX(-50%);    }
+
+        #fm{    height: max-content;    width: 80%;    margin: 0 auto;    }
+
+        #fm0{    height: max-content;    width: 60%;    margin: 0 auto;    }
+
+        #fm1{    height: max-content;    width: 620px;    float: right;    }
+
+        #hm{    text-align: center;    color: #92ec8b;    font-family: Papyrus, fantasy;    }
+ 
+        #hm:hover{    font-size: 2.2rem;    color: #1cda0f;   }
+
+        #pm{    font-size: 18px;    font-family: Georgia;    text-align: justify;   text-justify: inter-word;   color: #daebf9c1;    }
+
+        #pm:hover{    font-size: 19px;    color: #00bcd4;    }
+
+        #fm2{    height: max-content;    width: 700px;    float: right;    }
+
+        #ri{    height: 520px;    width:500px;   }
+
+        #si{    height: 440px;    width:580px;   }
+
+        #si1{    height: 760px;    width:600px;    }
+
+        #menu {    position: absolute;    top: 0;    left: -100%;    width: 100%;    height: 75px;    background-color: #acb0b9;    color: rgb(237, 250, 123);    display: flex;    align-items: center;    justify-content: center;    box-sizing: border-box;    transition: left 0.5s ease;    z-index: 99;    }
+
+        #menu.open {    left: 0;    }
+
+        #menu ul {    display: flex;    justify-content: center;    padding: 0;    list-style: none;    }
+
+        #menu li {    font-family: "Lucida Handwriting", cursive;    padding: 20px;    position: relative;    cursor: pointer;   }
+
+        #menu li ul {    display: none;    position: absolute;    top: 100%;     left: 0;    background-color: #0e7945b8;    color: #92ec8b;    z-index: 1000;    list-style: none;    padding: 10px;    margin: 0;    width: max-content;     box-sizing: border-box;    }
+
+        #menu li:hover {    background-color: #7be370;    color: #239363;    font-size: 18px;    }
+        
+        #menu li:hover ul {    display: block;     }
+
+        #menu li ul li {    text-align: left;    padding: 5px 10px;    white-space: nowrap;    }
+
+        #menu li ul li:hover {    background-color: #92ec8b;    }
+
+        #content {    flex: 1;    padding: 20px;    background-image: url('pis_back1.gif');     background-size: cover;    background-position: center;    background-repeat: no-repeat;    color: #daebf9c1;    overflow-y: auto;     }
+
+        fieldset {    background-color: rgba(0, 0, 0, 0.5);     border: 2px solid #e0bcbc;     padding: 20px;    width: 80%;    margin: 0 auto;    border-radius: 10px;      }
+
+        .container {    background-color: rgba(0, 0, 0, 0.5);   }
+
+        body {  font-family: 'Roboto', Arial, sans-serif;  margin: 0;  padding: 0;  background-color: #f8f9fa;  color: #333;   }
+
+        .contact-container {  max-width: 600px;  margin: 50px auto;  padding: 20px;  background: #d6a2a2;  border-radius: 10px;  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  transition: transform 0.3s ease-in-out;    }
+
+        .contact-container:hover {  transform: translateY(-5px);    }
+
+        .contact-title {  text-align: center;  font-size: 2rem;  color: #0077b5;  margin-bottom: 20px;  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);   }
+
+        .contact-item {  display: flex;  align-items: center;  margin: 10px 0;  padding: 10px;  border-radius: 5px;  transition: background-color 0.3s ease;    }
+
+        .contact-item img {  width: 30px;  height: 30px;  margin-right: 15px;    }
+
+        .contact-item span, .contact-item a {  font-size: 1.1rem;  color: #333;  text-decoration: none;  transition: color 0.3s ease;    }
+
+        .contact-item:hover {  background-color: #e3f2fd;    }
+
+        .contact-item:hover a {  color: #0077b5;    }
+
+        .contact-address {  margin-top: 20px;  border: 2px solid #90aebf;  border-radius: 10px;  padding: 15px;  background: #7e94ab;  transition: box-shadow 0.3s ease;    }
+
+        .contact-address:hover {  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  background-color: #3b4c5f;    }
+
+        .contact-address legend {  display: flex;  align-items: center;  font-size: 1.2rem;  font-weight: bold;  color: #2e753d;    }
+
+        .contact-address legend img {  width: 25px;  height: 25px;  margin-right: 10px;    }
+
+        .contact-address p {  margin: 10px 0 0;  font-size: 1rem;  line-height: 1.6;  color: #555;    }
+
+        .contact-container a:hover {  color: #004085;    }
+
+        @media (max-width: 768px) {  .contact-container {    width: 90%;    padding: 15px;  }  .contact-title {    font-size: 1.5rem;  }  .contact-item span, .contact-item a {    font-size: 1rem;  }   }
+
+        body, html {    background: none;    } 
+        
+        .hidden {    display: none;     }
+
+        @media (max-width: 768px) {   #menu ul {    flex-direction: column;    }    #menu li ul {    position: static;   }    }
+
+        @keyframes slideInFromTop {   0% {   transform: translateY(-100%);   opacity: 0;  }    100% {    transform: translateY(0);     opacity: 1;    }   }
+
+        .content-animate {    animation: slideInFromTop 1s ease-out;   }
+
+        @keyframes kickAndVibrate {    0% {      transform: translateY(-100%);     opacity: 0;    }    30% {    transform: translateY(0);     opacity: 1;   }    50%, 70%, 90% {     transform: translateY(10px);    }    60%, 80%, 100% {        transform: translateY(0);    }    }
+
+        .content-kick {    animation: kickAndVibrate 1s ease-out;    }
+
+        fieldset {    position: relative;    border: 3px solid transparent;     transition: border 0.3s ease-in-out;    }
+
+        fieldset::before {    content: "";    position: absolute;    top: 0;    left: 0;    width: 100%;    height: 100%;    border: 5px solid transparent;    border-image: linear-gradient(90deg, #ff6347, #00bcd4, #32cd32, #ff6347);     border-image-slice: 1;    animation: snake-border 1.5s linear infinite;     pointer-events: none;  }
+
+        @keyframes snake-border {    
+            0% {    border-image-source: linear-gradient(    90deg,    #ff6347 0%,    transparent 25%,    transparent 50%,   transparent 75%,   #00bcd4 100%  );  }    
+            25% {    border-image-source: linear-gradient(    90deg,    transparent 0%,  #00bcd4 25%,      transparent 50%,   transparent 75%,   #32cd32 100%  );  }
+            50% {    border-image-source: linear-gradient(    90deg,    transparent 0%,  transparent 25%,    #32cd32 50%,     transparent 75%,   #ff6347 100%  );  }
+            75% {    border-image-source: linear-gradient(    90deg,    transparent 0%,  transparent 25%,    transparent 50%,   #ff6347 75%,     #00bcd4 100%  );  }
+            100% {    border-image-source: linear-gradient(    90deg,    #00bcd4 0%,    transparent 25%,    transparent 50%,   transparent 75%,   #ff6347 100%  );  }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="splash">Welcome to K...N's Personal Information System</div>
+    <div id="container" class="hidden">
+        <div id="header">
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+            <div class="messages">
+                <span id="message1">Hello Viewers</span>
+                <span id="message2">How Are You All Today?</span>
+                <span id="message3">I Hope This Website Will Be Liked By You</span>
+                <span id="message4">Thanks For Your Visit, Bye</span>
+            </div>
+        </div>
+        <div id="menu">
+            <ul>
+                <li onclick="loadContent('about')">About Me</li>
+                <li>Educations
+                    <ul>
+                        <li onclick="loadContent('highschool')">SSLC &nbsp;&nbsp;    </li>
+                        <li onclick="loadContent('highersecondary')">HSC    </li>
+                        <li onclick="loadContent('degree')">Degree</li>
+                    </ul>
+                </li>
+                <li>Certifications
+                    <ul>
+                        <li onclick="loadContent('cybersecurity1')">Cybersecurity Fundamentals</li>
+                        <li onclick="loadContent('cybersecurity2')">Cybersecurity Essentials</li>
+                        <li onclick="loadContent('oracle')">Oracle Cloud Infrastructure</li>
+                        <li onclick="loadContent('ai')">Artificial Intelligence</li>
+                    </ul>
+                </li>
+                <li>Internships
+                    <ul>
+                        <li onclick="loadContent('python')">Python Programming</li>
+                        <li onclick="loadContent('fullstack')">Full Stack Web Development</li>
+                    </ul>
+                </li>
+                <li onclick="loadContent('skills')">Skills</li>
+                <li onclick="loadContent('resume')">Resume</li>
+                <li onclick="loadContent('contact')">Cantact Me</li>
+            </ul>
+        </div>
+        <div id="content">
+            <fieldset id="fm">
+            <h1 id="hm">Welcome to My Personal Information System</h1>
+            <p id="pm">This system is a comprehensive platform that provides detailed insights into my personal, academic, and professional journey. From my educational background to my skills and achievements, this system is designed to give visitors an engaging and informative experience.</p>
+            <p id="pm">The idea behind this project is to create an interactive space where my experiences and milestones can be showcased effectively. It serves as a digital resume, presenting my qualifications, projects, certifications, and other accomplishments in a structured and visually appealing way.</p>
+            <p id="pm">This platform was built using modern web development techniques, incorporating dynamic navigation, responsive design, and user-friendly interactions. Each section is carefully crafted to provide valuable insights while ensuring ease of access and clarity.</p>
+            <p id="pm">The project demonstrates my ability to design and implement web-based solutions that are not only functional but also aesthetically pleasing. By combining technical expertise with creativity, I aim to present my journey in a professional and captivating manner.</p>
+            <p id="pm">I believe that this system is not just a project but a reflection of my dedication to learning, innovation, and personal growth. It highlights my passion for technology and my commitment to continuously evolving as a professional.</p>
+            <p id="pm">I hope you find this platform informative and enjoyable. Your feedback and suggestions are highly appreciated, as they will help me improve and enhance this system further.</p>
+            </fieldset>
+        </div>
+        </div>
+<script>
+
+setTimeout(() => {
+    document.getElementById('splash').style.display = 'none';
+    document.getElementById('container').classList.remove('hidden');
+}, 5000);
+
+function toggleMenu() {
+    const menu = document.getElementById('menu');
+    const header = document.getElementById('header');
+    const messages = document.querySelector('.messages');
+    menu.classList.toggle('open');
+    if (menu.classList.contains('open')) {
+        messages.style.display = 'none';
+        header.style.overflow = 'hidden';
+    } else {
+        messages.style.display = 'block';
+        header.style.overflow = 'visible';
+    }
+}
+
+function loadContent(section) {
+    const content = document.getElementById('content');
+    const data = {
+    about: 
+    "<fieldset id='fm0'>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img id='ri' src='kathiresan-photo.png' alt='Profile Picture'>" +
+    "</td>"+
+    "<td>"+"<fieldset id='fm1' >" +
+    "<legend><strong id='hm' style='font-size:38px;'>About Me</strong></legend>" +
+    "<p id='pm'>Hello friends! I Am<strong> Kathiresan Thirumurugan </strong> and I Come From <strong> Ma Podaiyur</strong> village which located in <strong>Cuddalore</strong> district, <strong>Tamil Nadu - 606108.</strong></p>"+
+    "<p id='pm'>As a <strong>dedicated Full Stack Web Developer</strong>, I am passionate about crafting responsive and intuitive web applications that meet user needs and business goals. With a strong foundation in both front-end and back-end development, I specialize in creating solutions that are not only functional but also user-friendly and visually appealing.</p>" +
+    "<p id='pm'>I am proficient in a variety of programming languages including <strong>Java</strong>, <strong>JavaScript</strong>, <strong>HTML</strong>, <strong>CSS</strong>, and <strong>PHP</strong>, allowing me to build dynamic, high-performing applications that provide seamless user experiences across all devices. Whether it's creating responsive layouts or implementing complex logic, I excel in designing and executing high-quality solutions.</p>" +
+    "<p id='pm'>In addition to my development skills, I have extensive experience in <strong>database management</strong>, leveraging platforms like <strong>XAMPP</strong>, <strong>MySQL</strong>, <strong>Oracle DB</strong>, and <strong>MongoDB</strong> to ensure secure, efficient, and scalable data storage and retrieval. I focus on optimizing database performance, enhancing security, and maintaining data integrity, so that the applications I build run smoothly and reliably.</p>" +
+    "<p id='pm'>My work philosophy revolves around <strong>quality</strong> and <strong>security</strong>. I prioritize writing clean, maintainable code that adheres to best practices, while implementing robust security measures to safeguard user data. I also emphasize continuous learning and staying updated with the latest trends and technologies in web development to ensure my solutions are cutting-edge and future-proof.</p>" +
+    "<p id='pm'>Ultimately, my goal is to deliver web applications that are not only functional but also provide a seamless, enjoyable experience for users. I take pride in transforming complex requirements into simple, elegant solutions that add value to both the user and the business.</p>" +
+    "</td>"+  
+    "</tr>"+
+    "</table>"+ "</fieldset>" +
+    "</fieldset>",
+
+    highschool: 
+    "<fieldset id='fm0'>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img id='si' src='kathiresan-school.jpg' alt='Government Higher Secondary School'>" +
+    "</td>"+
+    "<td>"+"<fieldset id='fm1'>" +
+    "<legend><strong id='hm' style='font-size:28px;'>SSLC Details</strong></legend>" +
+    "<p id='pm'>I successfully completed my 10th standard at <strong>Government Higher Secondary School, Ma Podaiyur</strong> with an overall percentage of <strong>90%</strong>. This institution provided me with a solid foundation in academics, and I received strong support from both the faculty and my peers. I was able to develop a deep understanding of subjects like Mathematics, Science, and Social Studies, which helped me prepare for further studies.</p>" +
+    "<p id='pm'><strong>About the School:</strong></p>" +
+    "<p id='pm'><strong>Government Higher Secondary School, Ma Podayur</strong>, established in 1966, is managed by the Department of Education. The school is located in the rural area of Ma Podayur, in the Mangalore block of the Cuddalore district, Tamil Nadu. It serves students from grades 6 to 12, offering a co-educational environment. Tamil is the medium of instruction. The school provides facilities like a library with 1085 books, a playground, and computers for educational purposes. It has adequate infrastructure including a government building with 3 classrooms, functional toilets for boys and girls, and tap water for drinking.</p>" +
+    "<p id='pm'>The school has a total of 18 teachers, with 12 male and 6 female teachers. It is affiliated with the State Board, and it also provides mid-day meals prepared on the school premises. The school is committed to providing a safe and well-equipped learning environment, although there is no computer-aided learning lab or ramps for disabled children.</p>" +
+    "<p id='pm'><strong>Basic Infrastructure:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Location: Ma Podayur, Mangalore, Cuddalore, Tamil Nadu</li>" +
+    "<li id='pm'>Classrooms: 3</li>" +
+    "<li id='pm'>Boys' Toilet: 1, Girls' Toilet: 2 (both functional)</li>" +
+    "<li id='pm'>Library: Yes, with 1085 books</li>" +
+    "<li id='pm'>Computers: 9 (functional)</li>" +
+    "<li id='pm'>Playground: Yes</li>" +
+    "<li id='pm'>Drinking Water: Tap Water</li>" +
+    "<li id='pm'>Electricity: Yes</li>" +
+    "<li id='pm'>Medium of Instruction: Tamil</li>" +
+    "<li id='pm'>Teachers: 18 (12 male, 6 female)</li>" +
+    "<li id='pm'>Academic Level: 6th to 12th grade, State Board</li>" +
+    "<li id='pm'>School Management: Department of Education</li>" +
+    "</ul>" +
+    "<p id='pm'><strong>Contact Details:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Address: Ma Podayur, Mangalore, Cuddalore, Tamil Nadu, PIN: 606108, India</li>" +
+    "<li id='pm'>Mobile: +91 XXXXX-XXXXX</li>" +
+    "<li id='pm'>Email: XXXX@XXXXXX.XXX</li>" +
+    "</ul>" +
+    "</td>"+  
+    "</tr>"+
+    "</table>"+ "</fieldset>" +
+    "</fieldset>",
+
+    highersecondary: 
+    "<fieldset id='fm0'>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img id='si' src='kathiresan-school.jpg' alt='Government Higher Secondary School'>" +
+    "</td>"+
+    "<td>"+"<fieldset id='fm1'>" +
+    "<legend><strong id='hm' style='font-size:28px;'>HSC Details</strong></legend>" +
+    "<p id='pm'>I successfully completed my 12th standard at <strong>Government Higher Secondary School, Ma Podaiyur</strong> with an overall percentage of <strong>85%</strong>. This institution provided me with a solid foundation in academics, and I received strong support from both the faculty and my peers. I was able to develop a deep understanding of subjects like Mathematics, Science, and Social Studies, which helped me prepare for further studies.</p>" +
+    "<p id='pm'><strong>About the School:</strong></p>" +
+    "<p id='pm'><strong>Government Higher Secondary School, Ma Podayur</strong>, established in 1966, is managed by the Department of Education. The school is located in the rural area of Ma Podayur, in the Mangalore block of the Cuddalore district, Tamil Nadu. It serves students from grades 6 to 12, offering a co-educational environment. Tamil is the medium of instruction. The school provides facilities like a library with 1085 books, a playground, and computers for educational purposes. It has adequate infrastructure including a government building with 3 classrooms, functional toilets for boys and girls, and tap water for drinking.</p>" +
+    "<p id='pm'>The school has a total of 18 teachers, with 12 male and 6 female teachers. It is affiliated with the State Board, and it also provides mid-day meals prepared on the school premises. The school is committed to providing a safe and well-equipped learning environment, although there is no computer-aided learning lab or ramps for disabled children.</p>" +
+    "<p id='pm'><strong>Basic Infrastructure:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Location: Ma Podayur, Mangalore, Cuddalore, Tamil Nadu</li>" +
+    "<li id='pm'>Classrooms: 3</li>" +
+    "<li id='pm'>Boys' Toilet: 1, Girls' Toilet: 2 (both functional)</li>" +
+    "<li id='pm'>Library: Yes, with 1085 books</li>" +
+    "<li id='pm'>Computers: 9 (functional)</li>" +
+    "<li id='pm'>Playground: Yes</li>" +
+    "<li id='pm'>Drinking Water: Tap Water</li>" +
+    "<li id='pm'>Electricity: Yes</li>" +
+    "<li id='pm'>Medium of Instruction: Tamil</li>" +
+    "<li id='pm'>Teachers: 18 (12 male, 6 female)</li>" +
+    "<li id='pm'>Academic Level: 6th to 12th grade, State Board</li>" +
+    "<li id='pm'>School Management: Department of Education</li>" +
+    "</ul>" +
+    "<p id='pm'><strong>Contact Details:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Address: Ma Podaiyur, Mangalore, Cuddalore, Tamil Nadu, PIN: 606108, India</li>" +
+    "<li id='pm'>Mobile: +91 XXXXX-XXXXX</li>" +
+    "<li id='pm'>Email: XXXX@XXXXXX.XXX</li>" +
+    "</ul>" +
+    "</td>"+  
+    "</tr>"+
+    "</table>"+ "</fieldset>" +
+    "</fieldset>",   
+    
+    degree: 
+    "<fieldset id='fm0'>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img src='kathiresan-college.jpg' alt='Panimalar Engineering College' id='si'>" +
+    "</td>"+
+    "<td>"+
+    "<fieldset id='fm1'>" +
+    "<legend><strong id='hm' style='font-size:38px;'>Degree Details</strong></legend>" +
+    "<p id='pm'>Currently, I am pursuing a <strong>Bachelor of Technology (B.Tech)</strong> in <strong>Information Technology</strong> with an overall percentage of <strong>85%</strong>. My coursework focuses on developing a strong foundation in software engineering, databases, networks, and emerging technologies, which align with my aspirations to excel as a full-stack web developer.</p>" +
+    "<p id='pm'><strong>About the College:</strong></p>" +
+    "<p id='pm'><strong>Panimalar Engineering College</strong>, located in Poonamallee, Chennai, is one of Tamil Nadu's premier institutions. It is a Christian minority institution under the Jaisakthi Educational Trust and is affiliated with Anna University. The college is renowned for its state-of-the-art infrastructure, experienced faculty, and a focus on academic excellence, offering undergraduate and postgraduate programs in engineering and technology.</p>" +
+    "<p id='pm'>Panimalar Engineering College provides a holistic learning environment, emphasizing discipline, innovation, and practical knowledge. The campus is equipped with modern laboratories, a vast library, sports facilities, and a serene environment conducive to academic pursuits. Additionally, the college has a consistent track record of producing top-ranking students and achieving excellent placement results.</p>" +
+    "<p id='pm'><strong>Facilities and Highlights:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Location: Poonamallee, Chennai - 600 123, Tamil Nadu</li>" +
+    "<li id='pm'>Affiliation: Anna University</li>" +
+    "<li id='pm'>Accreditation: AICTE-approved</li>" +
+    "<li id='pm'>Programs: Undergraduate and Postgraduate in Engineering and Technology</li>" +
+    "<li id='pm'>Infrastructure: Advanced laboratories, a library with a vast collection of books and journals</li>" +
+    "<li id='pm'>Extracurricular Activities: Active student clubs, sports, and cultural events</li>" +
+    "<li id='pm'>Placement: Excellent track record with top companies recruiting students</li>" +
+    "</ul>" +
+    "<p id='pm'><strong>Contact Details:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Address: Panimalar Engineering College, Bangalore Trunk Road, Varadharajapuram, Poonamallee, Chennai - 600 123, Tamil Nadu</li>" +
+    "<li id='pm'>Phone: +91 XXXXX-XXXXX</li>" +
+    "<li id='pm'>Email: XXXX@XXXXXX.XXX</li>" +
+    "<li id='pm'>Website: <a href='https://www.panimalar.ac.in/' target='_blank'>www.panimalar.ac.in</a></li>" +
+    "</ul>" +
+    "</td>"+  
+    "</tr>"+
+    "</table>"+ "</fieldset>" +
+    "</fieldset>",
+    
+    oracle: 
+    "<fieldset id='fm0'>" + 
+    "<legend><strong id='hm' style='font-size:35px;'>Oracle Cloud Infrastructure 2024 - Generative AI Certified Professional </strong></legend>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img src='kathiresan-oai.png' alt='Panimalar Engineering College' id='si'>" +
+    "</td>"+
+    "<td>"+
+    "<fieldset id='fm1'>" +
+    "<legend><strong id='hm' style='font-size:38px;'>Certification Details</strong></legend>" +
+    "<p id='pm'><strong>Issued By:</strong> Oracle</p>" +
+    "<p id='pm'><strong>Date of Issue:</strong>23 July 2024</p>" +
+    "<p id='pm'><strong>Location:</strong> India</p>" +
+    "<p id='pm'><strong>Certification ID:</strong> 100722177OCI2024GAIOCP</p>" +
+    "<p id='pm'><strong>Key Learnings:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Learn to deploy and manage Oracle Cloud Infrastructure services</li>" +
+    "<li id='pm'>Focus on AI-driven cloud infrastructure management tools</li>" +
+    "<li id='pm'>Gain expertise in Oracle Generative AI capabilities for cloud solutions</li>" +
+    "</ul>" +
+    "</td>"+  
+    "</tr>"+
+    "</table>"+
+    "</fieldset>"+
+    "</fieldset>",
+
+    cybersecurity1: 
+    "<fieldset id='fm0'>" +
+    "<legend><strong id='hm' style='font-size:38px;'>Cybersecurity Fundamentals</strong></legend>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img src='kathiresan-cf1.png' alt='Panimalar Engineering College' id='si'>" +
+    "<img src='kathiresan-cf2.png' alt='Panimalar Engineering College' id='si'>" +
+    "</td>"+
+    "<td>"+
+    "</fieldset>"+
+    "<fieldset id=fm1>" +
+    "<legend><strong id='hm' style='font-size:38px;'>Certification details</strong></legend>" +
+    "<p id='pm'><strong>Issued By:</strong> Nasscom's Future Skills Prime</p>" +
+    "<p id='pm'><strong>Date of Issue:</strong> 16 December 2023</p>" +
+    "<p id='pm'><strong>Location:</strong> India</p>" +
+    "<p id='pm'><strong>Category:</strong> Bronze </p>" +
+    "<p id='pm'><strong>Certification ID:</strong> FSP/2023/12/5544512</p>" +
+    "<h3 id='pm'>Course Details:</h3>" +
+    "<p id='pm'>This certification validates your ability to understand cybersecurity fundamentals, including security protocols, network defense, and cybercriminal behavior. Learn how to safeguard information and networks from various cyber threats.</p>" +
+    "<p id='pm'><strong>Key Learnings:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Understanding cybercriminal tactics and techniques</li>" +
+    "<li id='pm'>Principles of confidentiality, integrity, and availability</li>" +
+    "<li id='pm'>Technologies and countermeasures to protect data confidentiality</li>" +
+    "<li id='pm'>Cybersecurity laws and how professionals defend networks</li>" +
+    "</ul>" +
+    "</td>"+
+    "</tr>"+
+    "</table>"+
+    "</fieldset>",
+
+    cybersecurity2:
+    "<fieldset id='fm0'>" +
+    "<legend><strong id='hm' style='font-size:38px;'>Cybersecurity Essentials</strong></legend>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img src='kathiresan-ce.png' alt='Panimalar Engineering College' id='si'>" +
+     "</td>"+ 
+    "<td>"+
+    "<fieldset id='fm1'>" +
+    "<legend><strong id='hm' style='font-size:38px;'>Certification Details</strong></legend>" +
+    "<p id='pm'><strong>Issued By:</strong> Cisco Networking Academy</p>" +
+    "<p id='pm'><strong>Date of Issue:</strong> 5 October 2023</p>" +
+    "<p id='pm'><strong>Location:</strong> India</p>" +
+    "<p id='pm'><strong>Key Learnings:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Understanding the tactics and techniques used by cybercriminals</li>" +
+    "<li id='pm'>Principles of data confidentiality, integrity, and availability</li>" +
+    "<li id='pm'>Technologies used to protect systems and data integrity</li>" +
+    "<li id='pm'>How cybersecurity professionals protect networks</li>" +
+    "</ul>" +
+    "</td>"+  
+    "</tr>"+
+    "</table>"+
+    "</fieldset>"+
+    "</fieldset>",
+
+    ai: 
+    "<fieldset id='fm0'>" +
+    "<legend><strong id='hm' style='font-size:38px;'>Artificial Intelligence for Real-World Application</strong></legend>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img src='kathiresan-ai1.png' alt='Panimalar Engineering College' id='si'>" +
+    "<br>"+
+    "<img src='kathiresan-ai2.png' alt='Panimalar Engineering College' id='si'>" +
+    "</td>"+ 
+    "<td>"+
+    "<fieldset id='fm1'>" +
+    "<legend><strong id='hm' style='font-size:38px;'>Certification Details</strong></legend>" +
+    "<p id='pm'><strong>Issued By:</strong> TCS iON Services</p>" +
+    "<p id='pm'><strong>Date of Issue:</strong> 7 April 2024</p>" +
+    "<p id='pm'><strong>Location:</strong> India</p>" +
+    "<p id='pm'><strong>Category:</strong> Participation</p>" +
+    "<p id='pm'><strong>Certification ID:</strong> FSP/2023/12/5544512</p>" +
+    "<p id='pm'><strong>Key Learnings:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Introduction to Machine Learning, Neural Networks, and Deep Learning</li>" +
+    "<li id='pm'>Practical applications of AI in various industries</li>" +
+    "<li id='pm'>Challenges in real-world AI implementation</li>" +
+    "</ul>" +
+    "</td>"+  
+    "</tr>"+
+    "</table>"+
+    "</fieldset>"+
+    "</fieldset>",
+    
+    python:     
+    "<fieldset id='fm0'>" +
+    "<legend><strong id='hm' style='font-size:20px;'>"+"<h1>Python Programming Internship</h1>"+"</strong></legend>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img src='kathiresan-python.png' alt='Panimalar Engineering College' id='si'>" +
+    "</td>"+ 
+    "<td>"+
+    "<fieldset id='fm1'>" +
+    "<legend><strong style='font-size:38px;'  id='hm'>Internship Details</strong></legend>" +
+    "<p id='pm'><strong>Intern Name:</strong> KATHIRESAN T</p>" +
+    "<p id='pm'><strong>Internship ID:</strong> 14364000026038325</p>" +
+    "<p id='pm'><strong>Certification ID:</strong> 9FJ87IV6VTH0K</p>" +
+    "<p id='pm'><strong>Issued By:</strong>YBI Foundation</p>" +
+    "<p id='pm'><strong>Domain:</strong>Python Programming</p>" +
+    "<p id='pm'><strong>Duration:</strong> 2 Weeks(25 July 2024 - 07 August 2024)</p>" +
+    "<p id='pm'><strong>Internship Highlights:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Successfully completed hands-on Python programming tasks.</li>" +
+    "<li id='pm'>Developed coding solutions for real-world applications.</li>" +
+    "<li id='pm'>Gained proficiency in Python libraries and debugging techniques.</li>" +
+    "</ul>" +
+    "<p id='pm'><strong>Contact Details:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'><strong>Address:</strong> 34 A Ali Akilu Road, Opposite Dialogue Girls College, Unguwan Sarki, Kaduna</li>" +
+    "<li id='pm'><strong>Phone:</strong> +91 9389641586, +91 8146434800</li>" +
+    "<li id='pm'><strong>Email:</strong> aminubabafatima8@gmail.com</li>" +
+    "<li id='pm'><strong>Website:</strong> <a href='https://ybif.org/' target='_blank'>www.mainflow.in</a></li>" +
+    "</ul>" +
+    "</td>"+  
+    "</tr>"+
+    "</table>"+
+    "</fieldset>"+
+    "</fieldset>",
+
+    fullstack: 
+    "<fieldset id='fm0'>" +
+    "<legend><strong id='hm' style='font-size:20px;'>"+"<h1>Full Stack Web Development Internship</h1>"+"</strong></legend>" +
+    "<table>"+
+    "<tr>"+
+    "<td>"+
+    "<img src='kathiresan-fullstack.png' alt='Panimalar Engineering College' id='si1'>" +
+    "</td>"+ 
+    "<td>"+
+    "<fieldset id='fm1'>" +
+    "<legend><strong style='font-size:38px;' id='hm'>Internship Details</strong></legend>" +
+    "<p id='pm'><strong>Intern Name:</strong> KATHIRESAN T</p>" +
+    "<p id='pm'><strong>Internship ID:</strong> 15249</p>" +
+    "<p id='pm'><strong>Issued By:</strong> Main Flow Services and Technologies Pvt. Ltd.</p>" +
+    "<p id='pm'><strong>Domain:</strong> Full Stack Web Development</p>" +
+    "<p id='pm'><strong>Duration:</strong> 8 Weeks (05 December 2024 - 05 February 2025)</p>" +
+    "<p id='pm'><strong>Internship Highlights:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'>Worked on end-to-end development of web applications.</li>" +
+    "<li id='pm'>Gained expertise in front-end and back-end technologies.</li>" +
+    "<li id='pm'>Learned project management and team collaboration skills.</li>" +
+    "<li id='pm'>Completed assigned projects and tasks with excellence.</li>" +
+    "</ul>" +
+    "<p id='pm'><strong>Contact Details:</strong></p>" +
+    "<ul>" +
+    "<li id='pm'><strong>Address:</strong> MSME REGISTERED UP-29-XX</li>" +
+    "<li id='pm'><strong>Phone:</strong> +91 9389641586, +91 9773699074</li>" +
+    "<li id='pm'><strong>Email:</strong> career.mainflow@gmail.com</li>" +
+    "<li id='pm'><strong>Website:</strong> <a href='https://www.mainflow.in' target='_blank'>www.mainflow.in</a></li>" +
+    "</ul>" +"</td>"+  
+    "</tr>"+
+    "</table>"+
+    "</fieldset>"+
+    "</fieldset>",
+
+    skills: 
+    "<fieldset style='border: 2px solid #ccc; padding: 20px; margin-bottom: 20px;'>" +
+    "<legend><strong id='hm' style='font-size:38px;'>Skills and Expertise</strong></legend>" +
+    "<table style='width: 100%; border-collapse: collapse;'>" +
+    "<tr>" +
+    "<th style='width: 50%; text-align: left; border-bottom: 2px solid #ccc; padding: 10px; font-size:30px;' id='hm'>Skills</th>" +
+    "<th style='width: 50%; text-align: left; border-bottom: 2px solid #ccc; padding: 10px; font-size:30px;' id='hm'>Expertise</th>" +
+    "</tr>" +
+    "<tr>" +
+    "<td style='vertical-align: top; padding: 10px;'>" +
+    "<p id='pm'><strong>Web Development:</strong> I have developed responsive and user-friendly websites using technologies like HTML, CSS, JavaScript, and frameworks such as React and Angular. This includes designing seamless user experiences and ensuring cross-browser compatibility.</p>" +
+    "<p id='pm'><strong>Java Development:</strong> I built robust, object-oriented Java applications for enterprise-level solutions, focusing on scalability and maintainability.</p>" +
+    "<p id='pm'><strong>SQL Development:</strong> Expertise in writing efficient queries, creating stored procedures, and optimizing database performance for MySQL, Oracle DB, and MongoDB.</p>" +
+    "<p id='pm'><strong>AI Analytics:</strong> Leveraging AI tools and frameworks to analyze complex datasets and derive actionable insights for decision-making.</p>" +
+    "<p id='pm'><strong>Project Management:</strong> Managed multiple projects simultaneously, ensuring timely delivery while maintaining quality standards.</p>" +
+    "</td>" +
+    "<td style='vertical-align: top; padding: 10px;'>" +
+    "<p id='pm'><strong>Management Skills:</strong> Demonstrated ability to lead teams, coordinate tasks, and achieve project goals effectively.</p>" +
+    "<p id='pm'><strong>Creativity:</strong> Consistently generated innovative ideas to enhance project designs and streamline processes.</p>" +
+    "<p id='pm'><strong>Negotiation:</strong> Successfully mediated client requirements and technical constraints, ensuring mutually beneficial outcomes.</p>" +
+    "<p id='pm'><strong>Critical Thinking:</strong> Applied logical reasoning to identify problems, analyze data, and implement effective solutions.</p>" +
+    "<p id='pm'><strong>Leadership:</strong> Guided diverse teams through challenging projects, fostering collaboration and achieving results.</p>" +
+    "</td>" +
+    "</tr>" +
+    "</table>" +
+    "</fieldset>",
+        
+    resume: 
+    "<fieldset style='width:50%'>"+
+    "<legend><strong id='hm' style='font-size:38px;'>Resume</strong></legend>"+
+    "<table style='width:50%'>"+
+    "<tr>"+
+    "<td>"+
+    "<img src='kathiresan-resume1.png' alt='Resume Page 1' id='si1'> "+
+    "<p id='pm'><strong>Page 1</strong></p>"+
+    "</td>"+
+    "<td>"+
+    "<img src='kathiresan-resume2.png' alt='Resume Page 2'; id='si1'>"+
+    "<p id='pm'><strong>Page 2</strong></p>"+
+    "</td>"+
+    "</tr>"+
+    "</table>"+
+    "</fieldset>",
+
+    contact: 
+    "<div class='contact-container'>"+
+    "<h2 id='hm' class='contact-title'>Contact Me</h2>"+
+    "<div class='contact-item'>"+
+    "<img src='mobile-icon1.jpg' alt='Phone Icon' />"+
+    "<span>+91 63844 72853</span>"+
+    "</div>"+
+    "<div class='contact-item'>"+
+    "<img src='mail-icon1.jpg' alt='Mail Icon' />"+
+    "<span>kathires432@gmail.com</span>"+
+    "</div>"+
+    "<div class='contact-item'>"+
+    "<img src='linkedin-icon.jpg' alt='LinkedIn Icon' />"+
+    "<a href='https://www.linkedin.com/in/kathiresan-t-2334bb31b' target='_blank'>LinkedIn</a>"+
+    "</div>"+
+    "<div class='contact-item'>"+
+    "<img src='github-icon.png' alt='GitHub Icon' />"+
+    "<a href='https://github.com/KATHIRESAN-T' target='_blank'>GitHub</a>"+
+    "</div>"+
+    "<div class='contact-item'>"+
+    "<img src='facebook-icon.png' alt='Facebook Icon' />"+
+    "<a href='https://www.facebook.com/kathir.tkathir.3' target='_blank'>Facebook</a>"+
+    "</div>"+
+    "<fieldset class='contact-address' style='width:90%;'>"+
+    "<legend><img src='home-icon.png' alt='Home Icon' />Address</legend>"+
+    "<p id='pm'>3/490, West Street, Ma Podaiyur Village, Ma Podaiyur Post, Tittakudi Taluk, uddalore District, TamilNadu - 606108 <a id='aa' href='https://maps.app.goo.gl/jRCsLpW2RQqq8hHE6' target='_blank'><strong>--><strong></a></p>"+
+    "</fieldset>"+
+    "</div>",
+    };
+
+    content.innerHTML = data[section] || "<p>Content not found.</p>";
+    content.classList.add('content-kick');
+    setTimeout(() => {
+    content.classList.remove('content-kick');
+    }, 900); 
+}
+
+window.onload = function () {
+    const content = document.getElementById('content');
+    content.classList.add('content-animate');
+    setTimeout(() => {
+        content.classList.remove('content-animate');
+    }, 500);
+};
+
+function displayMessages() {
+    const messages = [
+        document.getElementById('message1'),
+        document.getElementById('message2'),
+        document.getElementById('message3'),
+        document.getElementById('message4')
+    ];
+
+    let currentMessageIndex = 0;
+
+    setInterval(() => {
+        messages.forEach((message, index) => {
+            message.style.opacity = index === currentMessageIndex ? 1 : 0;
+        });
+        currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+    }, 2500); 
+}
+
+window.onload = function() {
+    displayMessages();
+};
+
+    </script>       
+</body>
+</html>
